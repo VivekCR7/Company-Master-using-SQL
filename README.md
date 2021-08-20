@@ -37,7 +37,7 @@ create the database schema.
         authorized_cap varchar(100),
         paidup_capital varchar(100),
         industrial_class varchar(100),
-        pricipal_business_activity_as_per_cin varchar(200),
+        principal_business_activity_as_per_cin varchar(200),
         registered_office_address varchar(200),
         registrar_of_companies varchar(100),
         email_addr varchar(120),
@@ -67,7 +67,7 @@ Query to extract the data respective to the year and create a new table.
 ```sql
     create table dataset as
     (select * from company_master
-    where date_of_registration > '2000-01-01' and
+    where date_of_registration >= '2000-01-01' and
             date_of_registration < '2021-12-31')
 ```
 
