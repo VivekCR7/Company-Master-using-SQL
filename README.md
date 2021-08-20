@@ -158,3 +158,46 @@ in different table
     )
 ```
 
+plot grouped barplot by aggregating registration counts over year of registration and
+principal business activity.
+
+```sql
+    create table grouped_barplot as (
+        select distinct years, count(years) as total, count(manufacture) as manufacture,
+                count(construction) as construction, count(other) as other
+        from (
+            select extract(year from date_of_registration::date) as years,
+                    principal_business_activity_as_per_cin as activity,
+                    case when(substring(principal_business_activity_as_per_cin,1,11) = 'Manufacture') then
+                            'Manufacture'
+                    end
+                    as manufacture,
+                    case when(substring(principal_business_activity_as_per_cin,1,12) = 'Construction') then
+                            'Construction'
+                    end
+                    as construction,
+                    case when(substring(principal_business_activity_as_per_cin,1,12) != 'Construction' and
+                            substring(principal_business_activity_as_per_cin,1,11) != 'Manufacture') then
+                                    'other'
+                    end
+                    as other
+                    from dataset
+            ) as dd
+        group by years
+        order by years
+    )
+```
+
+for above task I used subqueries in which i manipulated the string and looked for manufacture,
+construction in the principal activity then I extracted those and create seprated colum for them
+rest I altered with other. using this query I passed on parent query in which I extracted the distinct
+years and the count of years as total and all the other counts, group by with years
+which gave me the desired output so I created table using that query.
+
+<br>
+
+## Author
+
+- [@Vivek Dubey]()
+
+  
